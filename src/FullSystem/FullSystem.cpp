@@ -30,7 +30,7 @@
  */
 
 #include "FullSystem/FullSystem.h"
- 
+
 #include "stdio.h"
 #include "util/globalFuncs.h"
 #include <Eigen/LU>
@@ -55,7 +55,7 @@
 #include "util/ImageAndExposure.h"
 
 #include <cmath>
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -520,7 +520,7 @@ Vec4 FullSystem::trackNewCoarse(FrameHessian* fh, FrameHessian* fh_right)
 
 
     Eigen::Matrix<double,3,1> last_T = fh->shell->camToWorld.translation().transpose();
-    std::cout<<"x:"<<last_T(0,0)<<"y:"<<last_T(1,0)<<"z:"<<last_T(2,0)<<std::endl;
+//    std::cout<<"x:"<<last_T(0,0)<<"y:"<<last_T(1,0)<<"z:"<<last_T(2,0)<<std::endl;
 
 	if(coarseTracker->firstCoarseRMSE < 0)
 		coarseTracker->firstCoarseRMSE = achievedRes[0];
@@ -1109,7 +1109,7 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
     fh->makeImages(image->image, &Hcalib);
 	fh_right->ab_exposure = image_right->exposure_time;
 	fh_right->makeImages(image_right->image,&Hcalib);
-	
+
 	if(!initialized)
 	{
 		// use initializer!
@@ -1122,12 +1122,13 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
 	}
 	else	// do front-end operation.
 	{
+
 		// =========================== SWAP tracking reference?. =========================
 		if(coarseTracker_forNewKF->refFrameID > coarseTracker->refFrameID)
 		{
 			boost::unique_lock<boost::mutex> crlock(coarseTrackerSwapMutex);
-			CoarseTracker* tmp = coarseTracker; 
-			coarseTracker=coarseTracker_forNewKF; 
+			CoarseTracker* tmp = coarseTracker;
+			coarseTracker=coarseTracker_forNewKF;
 			coarseTracker_forNewKF=tmp;
 		}
 
@@ -1155,14 +1156,17 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
                           setting_kfGlobalWeight*setting_maxShiftWeightR *  sqrtf((double)tres[2]) / (wG[0]+hG[0]) +
                           setting_kfGlobalWeight*setting_maxShiftWeightRT * sqrtf((double)tres[3]) / (wG[0]+hG[0]) +
                           setting_kfGlobalWeight*setting_maxAffineWeight * fabs(logf((float)refToFh[0]));
-            printf(" delta is %f \n", delta);
+//            printf(" delta is %f \n", delta);
             // BRIGHTNESS CHECK
 			needToMakeKF = allFrameHistory.size()== 1 || delta > 1 || 2*coarseTracker->firstCoarseRMSE < tres[0];
 
 		}
 
         for(IOWrap::Output3DWrapper* ow : outputWrapper)
-           ow->publishCamPose(fh->shell, &Hcalib);
+        {
+            ow->publishCamPose(fh->shell, &Hcalib);
+            ow->publishKeyframes(frameHessians, false, &Hcalib);
+        }
 
 		lock.unlock();
 		deliverTrackedFrame(fh, fh_right, needToMakeKF);
@@ -1397,8 +1401,8 @@ void FullSystem::makeKeyFrame( FrameHessian* fh, FrameHessian* fh_right)
 	}
 
 	if(isLost) return;
-	
-	
+
+
 	// =========================== REMOVE OUTLIER =========================
 	removeOutliers();
 
@@ -1407,10 +1411,17 @@ void FullSystem::makeKeyFrame( FrameHessian* fh, FrameHessian* fh_right)
 		boost::unique_lock<boost::mutex> crlock(coarseTrackerSwapMutex);
 		coarseTracker_forNewKF->makeK(&Hcalib);
 		coarseTracker_forNewKF->setCoarseTrackingRef(frameHessians, fh_right, Hcalib);
-		
+
 		coarseTracker_forNewKF->debugPlotIDepthMap(&minIdJetVisTracker, &maxIdJetVisTracker, outputWrapper);
         coarseTracker_forNewKF->debugPlotIDepthMapFloat(outputWrapper);
 	}
+
+
+    for (auto *ow: outputWrapper)
+    {
+        if (initialized)
+            ow->publishInitSignal();
+    }
 
 
 //	debugPlot("post Optimize");

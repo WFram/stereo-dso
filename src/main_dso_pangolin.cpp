@@ -51,8 +51,8 @@
 #include "IOWrapper/Pangolin/PangolinDSOViewer.h"
 #include "IOWrapper/OutputWrapper/SampleOutputWrapper.h"
 
-#include <opencv/cv.hpp>
-#include <opencv/highgui.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 
 std::string vignette = "";
@@ -117,10 +117,10 @@ void settingsDefault(int preset)
         setting_maxOptIterations=6;
         setting_minOptIterations=1;
 
-        setting_kfGlobalWeight=0.3;   // original is 1.0. 0.3 is a balance between speed and accuracy. if tracking lost, set this para higher
-        setting_maxShiftWeightT= 0.04f * (640 + 128);   // original is 0.04f * (640+480); this para is depend on the crop size.
-        setting_maxShiftWeightR= 0.04f * (640 + 128);    // original is 0.0f * (640+480);
-        setting_maxShiftWeightRT= 0.02f * (640 + 128);  // original is 0.02f * (640+480);
+//        setting_kfGlobalWeight=0.3;   // original is 1.0. 0.3 is a balance between speed and accuracy. if tracking lost, set this para higher
+//        setting_maxShiftWeightT= 0.04f * (640 + 128);   // original is 0.04f * (640+480); this para is depend on the crop size.
+//        setting_maxShiftWeightR= 0.04f * (640 + 128);    // original is 0.0f * (640+480);
+//        setting_maxShiftWeightRT= 0.02f * (640 + 128);  // original is 0.02f * (640+480);
 
 		setting_logStuff = false;
 	}
@@ -356,7 +356,7 @@ int main( int argc, char** argv )
 
 	for(int i=1; i<argc;i++)
 		parseArgument(argv[i]);
-	
+
 	// hook crtl+C.
 	boost::thread exThread = boost::thread(exitThread);
 
@@ -364,22 +364,22 @@ int main( int argc, char** argv )
 	ImageFolderReader* reader_right = new ImageFolderReader(source+"/image_1", calib, gammaCalib, vignette);
 	reader->setGlobalCalibration();
 	reader_right->setGlobalCalibration();
-	
+
 	if(setting_photometricCalibration > 0 && reader->getPhotometricGamma() == 0)
 	{
 		printf("ERROR: dont't have photometric calibation. Need to use commandline options mode=1 or mode=2 ");
 		exit(1);
 	}
-	
+
 	int lstart=start;
 	int lend = end;
-	
+
 	// build system
 	FullSystem* fullSystem = new FullSystem();
 	fullSystem->setGammaFunction(reader->getPhotometricGamma());
 	fullSystem->linearizeOperation = (playbackSpeed==0);
-	
-	
+
+
 	IOWrap::PangolinDSOViewer* viewer = 0;
 	if(!disableAllDisplay)
     {

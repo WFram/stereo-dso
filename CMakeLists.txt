@@ -8,6 +8,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 #set(BUILD_TYPE Release)
 set(BUILD_TYPE RelWithDebInfo)
 
+set(CMAKE_GENERATOR "Ninja")
+
 set(EXECUTABLE_OUTPUT_PATH bin)
 set(LIBRARY_OUTPUT_PATH lib)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -27,9 +29,14 @@ find_package(OpenCV QUIET)
 # flags
 add_definitions("-DENABLE_SSE")
 set(CMAKE_CXX_FLAGS
-   "${SSE_FLAGS} -O3 -fPIC -g -std=c++0x -march=native"
-#   "${SSE_FLAGS} -O3 -g -std=c++0x -fno-omit-frame-pointer"
-)
+		"${SSE_FLAGS}"
+		)
+
+#add_definitions("-DENABLE_SSE")
+#set(CMAKE_CXX_FLAGS
+#   "${SSE_FLAGS} -O3 -fPIC -g -std=c++0x -march=native"
+##   "${SSE_FLAGS} -O3 -g -std=c++0x -fno-omit-frame-pointer"
+#)
 
 # Sources files
 set(dso_SOURCE_FILES

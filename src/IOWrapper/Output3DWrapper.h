@@ -196,6 +196,8 @@ public:
          */
         virtual void pushDepthImageFloat(MinimalImageF* image, FrameHessian* KF ) {}
 
+        virtual void publishInitSignal() {}
+
 
 
         /* call on finish */

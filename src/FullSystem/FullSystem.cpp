@@ -1165,8 +1165,8 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, ImageAndExposure* imag
         for(IOWrap::Output3DWrapper* ow : outputWrapper)
         {
             ow->publishCamPose(fh->shell, &Hcalib);
-//            if ((fh->shell->timestamp - allKeyFramesHistory.back()->timestamp) > 0.95f/setting_keyframesPerSecond)
-//           	    ow->publishKeyframes(frameHessians, false, &Hcalib);
+            if ((fh->shell->timestamp - allKeyFramesHistory.back()->timestamp) > 0.95f/5)
+           	    ow->publishKeyframes(frameHessians, false, &Hcalib);
         }
 
 		lock.unlock();

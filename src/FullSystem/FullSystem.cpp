@@ -1376,7 +1376,7 @@ void FullSystem::makeKeyFrame( FrameHessian* fh, FrameHessian* fh_right)
 	fh->frameEnergyTH = frameHessians.back()->frameEnergyTH;
 	float rmse = optimize(setting_maxOptIterations);
     //printf("allKeyFramesHistory size is %d \n", (int)allKeyFramesHistory.size());
-    printf("rmse is %f \n", rmse);
+//    printf("rmse is %f \n", rmse);
 
 
 
@@ -1604,7 +1604,7 @@ void FullSystem::makeNewTraces(FrameHessian* newFrame, FrameHessian* newFrameRig
 		else newFrame->immaturePoints.push_back(impt);
 
 	}
-	printf("MADE %d IMMATURE POINTS!\n", (int)newFrame->immaturePoints.size());
+//	printf("MADE %d IMMATURE POINTS!\n", (int)newFrame->immaturePoints.size());
 
 }
 

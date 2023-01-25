@@ -63,6 +63,7 @@ private:
 	float* thsSmoothed;
 	int thsStep;
 	const FrameHessian* gradHistFrame;
+	const int blockSize;
 };
 
 

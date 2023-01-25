@@ -36,8 +36,8 @@ int pyrLevelsUsed = PYR_LEVELS;
 float setting_keyframesPerSecond = 0;   // if !=0, takes a fixed number of KF per second.
 bool setting_realTimeMaxKF = false;   // if true, takes as many KF's as possible (will break the system if the camera stays stationary)
 float setting_maxShiftWeightT= 0.04f * (640 + 480);   // original is 0.04f * (640+480);
-float setting_maxShiftWeightR= 0.0f * (640 + 480);    // original is 0.0f * (640+480);
-float setting_maxShiftWeightRT= 0.02f * (640 + 480);  // original is 0.02f * (640+480);
+float setting_maxShiftWeightR= 0.5f * (640 + 480);    // original is 0.0f * (640+480);
+float setting_maxShiftWeightRT= 0.1f * (640 + 480);  // original is 0.02f * (640+480);
 float setting_kfGlobalWeight = 1;   // general weight on threshold, the larger the more KF's are taken (e.g., 2 = double the amount of KF's).
 float setting_maxAffineWeight= 2;
 
@@ -143,7 +143,7 @@ float setting_coarseCutoffTH = 20;
 
 // parameters controlling pixel selection
 float setting_minGradHistCut = 0.5;
-float setting_minGradHistAdd = 7;
+float setting_minGradHistAdd = 15;
 float setting_gradDownweightPerLevel = 0.75;
 bool  setting_selectDirectionDistribution = true;
 

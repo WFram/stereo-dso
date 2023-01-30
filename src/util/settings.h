@@ -30,8 +30,7 @@
 #include <cmath>
 
 
-namespace dso
-{
+namespace dso {
 #define SOLVER_SVD (int)1
 #define SOLVER_ORTHOGONALIZE_SYSTEM (int)2
 #define SOLVER_ORTHOGONALIZE_POINTMARG (int)4
@@ -48,161 +47,148 @@ namespace dso
 
 // ============== PARAMETERS TO BE DECIDED ON COMPILE TIME =================
 #define PYR_LEVELS 6
-extern int pyrLevelsUsed;
+    extern int pyrLevelsUsed;
 
 
-
-extern float setting_keyframesPerSecond;
-extern bool setting_realTimeMaxKF;
-extern float setting_maxShiftWeightT;
-extern float setting_maxShiftWeightR;
-extern float setting_maxShiftWeightRT;
-extern float setting_maxAffineWeight;
-extern float setting_kfGlobalWeight;
-
+    extern float setting_keyframesPerSecond;
+    extern bool setting_realTimeMaxKF;
+    extern float setting_maxShiftWeightT;
+    extern float setting_maxShiftWeightR;
+    extern float setting_maxShiftWeightRT;
+    extern float setting_maxAffineWeight;
+    extern float setting_kfGlobalWeight;
 
 
-extern float setting_idepthFixPrior;
-extern float setting_idepthFixPriorMargFac;
-extern float setting_initialRotPrior;
-extern float setting_initialTransPrior;
-extern float setting_initialAffBPrior;
-extern float setting_initialAffAPrior;
-extern float setting_initialCalibHessian;
+    extern float setting_idepthFixPrior;
+    extern float setting_idepthFixPriorMargFac;
+    extern float setting_initialRotPrior;
+    extern float setting_initialTransPrior;
+    extern float setting_initialAffBPrior;
+    extern float setting_initialAffAPrior;
+    extern float setting_initialCalibHessian;
 
-extern int setting_solverMode;
-extern double setting_solverModeDelta;
-
-
-extern float setting_minIdepthH_act;
-extern float setting_minIdepthH_marg;
+    extern int setting_solverMode;
+    extern double setting_solverModeDelta;
 
 
-
-extern float setting_maxIdepth;
-extern float setting_maxPixSearch;
-extern float setting_desiredImmatureDensity;			// done
-extern float setting_desiredPointDensity;			// done
-extern float setting_minPointsRemaining;
-extern float setting_maxLogAffFacInWindow;
-extern int setting_minFrames;
-extern int setting_maxFrames;
-extern int setting_minFrameAge;
-extern int setting_maxOptIterations;
-extern int setting_minOptIterations;
-extern float setting_thOptIterations;
-extern float setting_outlierTH;
-extern float setting_outlierTHSumComponent;
+    extern float setting_minIdepthH_act;
+    extern float setting_minIdepthH_marg;
 
 
-
-extern int setting_pattern;
-extern float setting_margWeightFac;
-extern int setting_GNItsOnPointActivation;
-
-
-extern float setting_minTraceQuality;
-extern int setting_minTraceTestRadius;
-extern float setting_reTrackThreshold;
-
-
-extern int   setting_minGoodActiveResForMarg;
-extern int   setting_minGoodResForMarg;
-extern int   setting_minInlierVotesForMarg;
-
-
+    extern float setting_maxIdepth;
+    extern float setting_maxPixSearch;
+    extern float setting_desiredImmatureDensity;            // done
+    extern float setting_desiredPointDensity;            // done
+    extern float setting_minPointsRemaining;
+    extern float setting_maxLogAffFacInWindow;
+    extern int setting_minFrames;
+    extern int setting_maxFrames;
+    extern int setting_minFrameAge;
+    extern int setting_maxOptIterations;
+    extern int setting_minOptIterations;
+    extern float setting_thOptIterations;
+    extern float setting_outlierTH;
+    extern float setting_outlierTHSumComponent;
 
 
-extern int setting_photometricCalibration;
-extern bool setting_useExposure;
-extern float setting_affineOptModeA;
-extern float setting_affineOptModeB;
-extern int setting_gammaWeightsPixelSelect;
+    extern int setting_pattern;
+    extern float setting_margWeightFac;
+    extern int setting_GNItsOnPointActivation;
 
 
-
-extern bool setting_forceAceptStep;
-
-
-
-extern float setting_huberTH;
+    extern float setting_minTraceQuality;
+    extern int setting_minTraceTestRadius;
+    extern float setting_reTrackThreshold;
 
 
-extern bool setting_logStuff;
-extern float benchmarkSetting_fxfyfac;
-extern int benchmarkSetting_width;
-extern int benchmarkSetting_height;
-extern float benchmark_varNoise;
-extern float benchmark_varBlurNoise;
-extern int benchmark_noiseGridsize;
-extern float benchmark_initializerSlackFactor;
-
-extern float setting_frameEnergyTHConstWeight;
-extern float setting_frameEnergyTHN;
-
-extern float setting_frameEnergyTHFacMedian;
-extern float setting_overallEnergyTHWeight;
-extern float setting_coarseCutoffTH;
-
-extern float setting_minGradHistCut;
-extern float setting_minGradHistAdd;
-extern float setting_gradDownweightPerLevel;
-extern bool  setting_selectDirectionDistribution;
+    extern int setting_minGoodActiveResForMarg;
+    extern int setting_minGoodResForMarg;
+    extern int setting_minInlierVotesForMarg;
 
 
-
-extern float setting_trace_stepsize;
-extern int setting_trace_GNIterations;
-extern float setting_trace_GNThreshold;
-extern float setting_trace_extraSlackOnTH;
-extern float setting_trace_slackInterval;
-extern float setting_trace_minImprovementFactor;
+    extern int setting_photometricCalibration;
+    extern bool setting_useExposure;
+    extern float setting_affineOptModeA;
+    extern float setting_affineOptModeB;
+    extern int setting_gammaWeightsPixelSelect;
 
 
-extern bool setting_render_displayCoarseTrackingFull;
-extern bool setting_render_renderWindowFrames;
-extern bool setting_render_plotTrackingFull;
-extern bool setting_render_display3D;
-extern bool setting_render_displayResidual;
-extern bool setting_render_displayVideo;
-extern bool setting_render_displayDepth;
-
-extern bool setting_fullResetRequested;
-
-extern bool setting_debugout_runquiet;
-
-extern bool disableAllDisplay;
-extern bool disableReconfigure;
+    extern bool setting_forceAceptStep;
 
 
-extern bool setting_onlyLogKFPoses;
+    extern float setting_huberTH;
 
 
+    extern bool setting_logStuff;
+    extern float benchmarkSetting_fxfyfac;
+    extern int benchmarkSetting_width;
+    extern int benchmarkSetting_height;
+    extern float benchmark_varNoise;
+    extern float benchmark_varBlurNoise;
+    extern int benchmark_noiseGridsize;
+    extern float benchmark_initializerSlackFactor;
+
+    extern float setting_frameEnergyTHConstWeight;
+    extern float setting_frameEnergyTHN;
+
+    extern float setting_frameEnergyTHFacMedian;
+    extern float setting_overallEnergyTHWeight;
+    extern float setting_coarseCutoffTH;
+
+    extern float setting_minGradHistCut;
+    extern float setting_minGradHistAdd;
+    extern float setting_gradDownweightPerLevel;
+    extern bool setting_selectDirectionDistribution;
 
 
-extern bool debugSaveImages;
+    extern float setting_trace_stepsize;
+    extern int setting_trace_GNIterations;
+    extern float setting_trace_GNThreshold;
+    extern float setting_trace_extraSlackOnTH;
+    extern float setting_trace_slackInterval;
+    extern float setting_trace_minImprovementFactor;
 
 
-extern int sparsityFactor;
-extern bool goStepByStep;
-extern bool plotStereoImages;
-extern bool multiThreading;
+    extern bool setting_render_displayCoarseTrackingFull;
+    extern bool setting_render_renderWindowFrames;
+    extern bool setting_render_plotTrackingFull;
+    extern bool setting_render_display3D;
+    extern bool setting_render_displayResidual;
+    extern bool setting_render_displayVideo;
+    extern bool setting_render_displayDepth;
 
-extern float freeDebugParam1;
-extern float freeDebugParam2;
-extern float freeDebugParam3;
-extern float freeDebugParam4;
-extern float freeDebugParam5;
+    extern bool setting_fullResetRequested;
+
+    extern bool setting_debugout_runquiet;
+
+    extern bool disableAllDisplay;
+    extern bool disableReconfigure;
 
 
-void handleKey(char k);
+    extern bool setting_onlyLogKFPoses;
 
 
+    extern bool debugSaveImages;
 
 
-extern int staticPattern[10][40][2];
-extern int staticPatternNum[10];
-extern int staticPatternPadding[10];
+    extern int sparsityFactor;
+    extern bool goStepByStep;
+    extern bool plotStereoImages;
+    extern bool multiThreading;
+
+    extern float freeDebugParam1;
+    extern float freeDebugParam2;
+    extern float freeDebugParam3;
+    extern float freeDebugParam4;
+    extern float freeDebugParam5;
+
+
+    void handleKey(char k);
+
+
+    extern int staticPattern[10][40][2];
+    extern int staticPatternNum[10];
+    extern int staticPatternPadding[10];
 
 
 
@@ -215,17 +201,6 @@ extern int staticPatternPadding[10];
 #define patternNum 8
 #define patternP staticPattern[8]
 #define patternPadding 2
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

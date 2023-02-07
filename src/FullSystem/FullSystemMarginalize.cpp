@@ -28,26 +28,26 @@
  *      Author: engelj
  */
 
-#include "FullSystem/FullSystem.h"
+#include "FullSystem.h"
 
 #include <Eigen/LU>
 #include <algorithm>
-#include "IOWrapper/ImageDisplay.h"
+#include "ImageDisplay.h"
 #include "stdio.h"
-#include "util/globalCalib.h"
-#include "util/globalFuncs.h"
+#include "globalCalib.h"
+#include "globalFuncs.h"
 
 #include <Eigen/Eigenvalues>
 #include <Eigen/SVD>
-#include "FullSystem/ImmaturePoint.h"
-#include "FullSystem/ResidualProjections.h"
+#include "ImmaturePoint.h"
+#include "ResidualProjections.h"
 
-#include "OptimizationBackend/EnergyFunctional.h"
-#include "OptimizationBackend/EnergyFunctionalStructs.h"
+#include "EnergyFunctional.h"
+#include "EnergyFunctionalStructs.h"
 
-#include "IOWrapper/Output3DWrapper.h"
+#include "Output3DWrapper.h"
 
-#include "FullSystem/CoarseTracker.h"
+#include "CoarseTracker.h"
 
 namespace dso {
 

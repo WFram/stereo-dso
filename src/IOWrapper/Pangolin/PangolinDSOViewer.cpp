@@ -24,12 +24,12 @@
 #include "PangolinDSOViewer.h"
 #include "KeyFrameDisplay.h"
 
-#include "FullSystem/FullSystem.h"
-#include "FullSystem/HessianBlocks.h"
-#include "FullSystem/ImmaturePoint.h"
-#include "util/DatasetReader.h"
-#include "util/globalCalib.h"
-#include "util/settings.h"
+#include "FullSystem.h"
+#include "HessianBlocks.h"
+#include "ImmaturePoint.h"
+#include "DatasetReader.h"
+#include "globalCalib.h"
+#include "settings.h"
 
 #include <fstream>
 #include <iostream>

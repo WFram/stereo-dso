@@ -21,13 +21,13 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "OptimizationBackend/EnergyFunctional.h"
-#include "FullSystem/FullSystem.h"
-#include "FullSystem/HessianBlocks.h"
-#include "FullSystem/Residuals.h"
-#include "OptimizationBackend/AccumulatedSCHessian.h"
-#include "OptimizationBackend/AccumulatedTopHessian.h"
-#include "OptimizationBackend/EnergyFunctionalStructs.h"
+#include "EnergyFunctional.h"
+#include "FullSystem.h"
+#include "HessianBlocks.h"
+#include "Residuals.h"
+#include "AccumulatedSCHessian.h"
+#include "AccumulatedTopHessian.h"
+#include "EnergyFunctionalStructs.h"
 
 namespace dso {
 

@@ -21,7 +21,7 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "util/globalCalib.h"
+#include "globalCalib.h"
 #include <iostream>
 #include "stdio.h"
 

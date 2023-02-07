@@ -28,14 +28,14 @@
  *      Author: engelj
  */
 
-#include "FullSystem/CoarseTracker.h"
+#include "CoarseTracker.h"
 #include <algorithm>
-#include "FullSystem/FullSystem.h"
-#include "FullSystem/HessianBlocks.h"
-#include "FullSystem/ImmaturePoint.h"
-#include "FullSystem/Residuals.h"
-#include "IOWrapper/ImageRW.h"
-#include "OptimizationBackend/EnergyFunctionalStructs.h"
+#include "FullSystem.h"
+#include "HessianBlocks.h"
+#include "ImmaturePoint.h"
+#include "Residuals.h"
+#include "ImageRW.h"
+#include "EnergyFunctionalStructs.h"
 
 namespace dso {
 CoarseTracker::CoarseTracker(int ww, int hh) : lastRef_aff_g2l(0, 0) {

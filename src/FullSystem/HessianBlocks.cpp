@@ -21,10 +21,10 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "FullSystem/HessianBlocks.h"
-#include "FullSystem/ImmaturePoint.h"
-#include "OptimizationBackend/EnergyFunctionalStructs.h"
-#include "util/FrameShell.h"
+#include "HessianBlocks.h"
+#include "ImmaturePoint.h"
+#include "EnergyFunctionalStructs.h"
+#include "FrameShell.h"
 
 namespace dso {
 

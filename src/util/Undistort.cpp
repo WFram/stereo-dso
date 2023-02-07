@@ -27,11 +27,11 @@
 
 #include <Eigen/Core>
 #include <iterator>
-#include "IOWrapper/ImageDisplay.h"
-#include "IOWrapper/ImageRW.h"
-#include "util/Undistort.h"
-#include "util/globalFuncs.h"
-#include "util/settings.h"
+#include "ImageDisplay.h"
+#include "ImageRW.h"
+#include "Undistort.h"
+#include "globalFuncs.h"
+#include "settings.h"
 
 namespace dso {
 

@@ -23,14 +23,14 @@
 
 #pragma once
 
-#include "util/globalCalib.h"
+#include "globalCalib.h"
 #include "vector"
 
 #include <fstream>
 #include <iostream>
-#include "OptimizationBackend/RawResidualJacobian.h"
-#include "util/NumType.h"
-#include "util/globalFuncs.h"
+#include "RawResidualJacobian.h"
+#include "NumType.h"
+#include "globalFuncs.h"
 
 namespace dso {
 class PointHessian;

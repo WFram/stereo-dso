@@ -21,7 +21,7 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "IOWrapper/ImageDisplay.h"
+#include "ImageDisplay.h"
 
 #include <opencv4/opencv2/highgui.hpp>
 
@@ -30,7 +30,7 @@
 
 #include <boost/thread.hpp>
 
-#include "util/settings.h"
+#include "settings.h"
 
 namespace dso {
 

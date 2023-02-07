@@ -28,19 +28,19 @@
  *      Author: engelj
  */
 
-#include "FullSystem/FullSystem.h"
+#include "FullSystem.h"
 
 #include <Eigen/Eigenvalues>
 #include <Eigen/LU>
 #include <Eigen/SVD>
 #include <algorithm>
-#include "IOWrapper/ImageDisplay.h"
-#include "IOWrapper/ImageRW.h"
+#include "ImageDisplay.h"
+#include "ImageRW.h"
 #include "stdio.h"
-#include "util/globalCalib.h"
-#include "util/globalFuncs.h"
+#include "globalCalib.h"
+#include "globalFuncs.h"
 
-#include "FullSystem/ImmaturePoint.h"
+#include "ImmaturePoint.h"
 
 namespace dso {
 

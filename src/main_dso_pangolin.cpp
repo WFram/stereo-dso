@@ -29,22 +29,22 @@
 #include <chrono>
 #include <thread>
 
-#include "IOWrapper/ImageDisplay.h"
-#include "IOWrapper/Output3DWrapper.h"
+#include "ImageDisplay.h"
+#include "Output3DWrapper.h"
 
 #include <boost/thread.hpp>
-#include "util/DatasetReader.h"
-#include "util/globalCalib.h"
-#include "util/globalFuncs.h"
-#include "util/settings.h"
+#include "DatasetReader.h"
+#include "globalCalib.h"
+#include "globalFuncs.h"
+#include "settings.h"
 
-#include "FullSystem/FullSystem.h"
-#include "FullSystem/PixelSelector2.h"
-#include "OptimizationBackend/MatrixAccumulators.h"
-#include "util/NumType.h"
+#include "FullSystem.h"
+#include "PixelSelector2.h"
+#include "MatrixAccumulators.h"
+#include "NumType.h"
 
-#include "IOWrapper/OutputWrapper/SampleOutputWrapper.h"
-#include "IOWrapper/Pangolin/PangolinDSOViewer.h"
+#include "OutputWrapper/SampleOutputWrapper.h"
+#include "Pangolin/PangolinDSOViewer.h"
 
 #include <opencv4/opencv2/highgui.hpp>
 #include <opencv4/opencv2/opencv.hpp>

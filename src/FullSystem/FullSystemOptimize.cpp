@@ -21,20 +21,20 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "FullSystem/FullSystem.h"
+#include "FullSystem.h"
 
 #include <Eigen/Eigenvalues>
 #include <Eigen/LU>
 #include <Eigen/SVD>
 #include <algorithm>
-#include "FullSystem/ResidualProjections.h"
-#include "IOWrapper/ImageDisplay.h"
+#include "ResidualProjections.h"
+#include "ImageDisplay.h"
 #include "stdio.h"
-#include "util/globalCalib.h"
-#include "util/globalFuncs.h"
+#include "globalCalib.h"
+#include "globalFuncs.h"
 
-#include "OptimizationBackend/EnergyFunctional.h"
-#include "OptimizationBackend/EnergyFunctionalStructs.h"
+#include "EnergyFunctional.h"
+#include "EnergyFunctionalStructs.h"
 
 #include <cmath>
 

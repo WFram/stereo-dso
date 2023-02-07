@@ -24,8 +24,8 @@
 #pragma once
 
 #include <math.h>
-#include "OptimizationBackend/RawResidualJacobian.h"
-#include "util/NumType.h"
+#include "RawResidualJacobian.h"
+#include "NumType.h"
 #include "vector"
 
 namespace dso {

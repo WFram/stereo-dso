@@ -25,9 +25,9 @@
 #include <pangolin/pangolin.h>
 #include <deque>
 #include <map>
-#include "IOWrapper/Output3DWrapper.h"
+#include "Output3DWrapper.h"
 #include "boost/thread.hpp"
-#include "util/MinimalImage.h"
+#include "MinimalImage.h"
 
 namespace dso {
 

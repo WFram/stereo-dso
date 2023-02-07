@@ -21,15 +21,15 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "FullSystem/PixelSelector2.h"
+#include "PixelSelector2.h"
 
 //
 
-#include "FullSystem/HessianBlocks.h"
-#include "IOWrapper/ImageDisplay.h"
-#include "util/NumType.h"
-#include "util/globalCalib.h"
-#include "util/globalFuncs.h"
+#include "HessianBlocks.h"
+#include "ImageDisplay.h"
+#include "NumType.h"
+#include "globalCalib.h"
+#include "globalFuncs.h"
 
 namespace dso {
 

@@ -22,8 +22,8 @@
  */
 
 #pragma once
-#include "util/NumType.h"
-#include "util/settings.h"
+#include "NumType.h"
+#include "settings.h"
 
 namespace dso {
 extern int wG[PYR_LEVELS], hG[PYR_LEVELS];

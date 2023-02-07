@@ -21,9 +21,9 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "FullSystem/ImmaturePoint.h"
-#include "FullSystem/ResidualProjections.h"
-#include "util/FrameShell.h"
+#include "ImmaturePoint.h"
+#include "ResidualProjections.h"
+#include "FrameShell.h"
 
 namespace dso {
 ImmaturePoint::ImmaturePoint(int u_, int v_, FrameHessian* host_, float type, CalibHessian* HCalib)

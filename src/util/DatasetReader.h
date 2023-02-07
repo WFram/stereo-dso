@@ -22,17 +22,17 @@
  */
 
 #pragma once
-#include "util/globalCalib.h"
-#include "util/globalFuncs.h"
-#include "util/settings.h"
+#include "globalCalib.h"
+#include "globalFuncs.h"
+#include "settings.h"
 
 #include <dirent.h>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
 
-#include "IOWrapper/ImageRW.h"
-#include "util/Undistort.h"
+#include "ImageRW.h"
+#include "Undistort.h"
 
 #if HAS_ZIPLIB
 #include "zip.h"

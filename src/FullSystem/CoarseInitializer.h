@@ -24,10 +24,10 @@
 #pragma once
 
 #include <math.h>
-#include "IOWrapper/Output3DWrapper.h"
-#include "OptimizationBackend/MatrixAccumulators.h"
-#include "util/NumType.h"
-#include "util/settings.h"
+#include "Output3DWrapper.h"
+#include "MatrixAccumulators.h"
+#include "NumType.h"
+#include "settings.h"
 #include "vector"
 
 namespace dso {

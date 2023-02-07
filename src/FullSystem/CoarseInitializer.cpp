@@ -28,14 +28,14 @@
  *      Author: engelj
  */
 
-#include "FullSystem/CoarseInitializer.h"
-#include "FullSystem/FullSystem.h"
-#include "FullSystem/HessianBlocks.h"
-#include "FullSystem/ImmaturePoint.h"
-#include "FullSystem/PixelSelector.h"
-#include "FullSystem/PixelSelector2.h"
-#include "FullSystem/Residuals.h"
-#include "util/nanoflann.h"
+#include "CoarseInitializer.h"
+#include "FullSystem.h"
+#include "HessianBlocks.h"
+#include "ImmaturePoint.h"
+#include "PixelSelector.h"
+#include "PixelSelector2.h"
+#include "Residuals.h"
+#include "nanoflann.h"
 
 namespace dso {
 

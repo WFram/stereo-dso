@@ -22,12 +22,12 @@
  */
 
 #pragma once
-#include "IOWrapper/Output3DWrapper.h"
+#include "Output3DWrapper.h"
 #include "boost/thread.hpp"
-#include "util/MinimalImage.h"
+#include "MinimalImage.h"
 
-#include "FullSystem/HessianBlocks.h"
-#include "util/FrameShell.h"
+#include "HessianBlocks.h"
+#include "FrameShell.h"
 
 namespace dso {
 

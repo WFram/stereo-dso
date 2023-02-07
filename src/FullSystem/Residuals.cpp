@@ -28,22 +28,22 @@
  *      Author: engelj
  */
 
-#include "FullSystem/FullSystem.h"
+#include "FullSystem.h"
 
 #include <Eigen/Eigenvalues>
 #include <Eigen/LU>
 #include <Eigen/SVD>
 #include <algorithm>
-#include "IOWrapper/ImageDisplay.h"
+#include "ImageDisplay.h"
 #include "stdio.h"
-#include "util/globalCalib.h"
-#include "util/globalFuncs.h"
+#include "globalCalib.h"
+#include "globalFuncs.h"
 
-#include "FullSystem/ResidualProjections.h"
-#include "OptimizationBackend/EnergyFunctional.h"
-#include "OptimizationBackend/EnergyFunctionalStructs.h"
+#include "ResidualProjections.h"
+#include "EnergyFunctional.h"
+#include "EnergyFunctionalStructs.h"
 
-#include "FullSystem/HessianBlocks.h"
+#include "HessianBlocks.h"
 
 namespace dso {
 int PointFrameResidual::instanceCounter = 0;

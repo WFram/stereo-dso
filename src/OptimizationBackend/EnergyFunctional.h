@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "util/NumType.h"
-#include "util/IndexThreadReduce.h"
+#include "NumType.h"
+#include "IndexThreadReduce.h"
 #include "vector"
 #include <math.h>
 #include "map"

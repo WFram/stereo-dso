@@ -23,9 +23,9 @@
 
 #pragma once
 
-#include "util/NumType.h"
+#include "NumType.h"
 
-#include "FullSystem/HessianBlocks.h"
+#include "HessianBlocks.h"
 namespace dso {
 
 struct ImmaturePointTemporaryResidual {

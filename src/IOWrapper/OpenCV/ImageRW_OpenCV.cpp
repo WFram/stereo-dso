@@ -22,7 +22,7 @@
  */
 
 #include <opencv4/opencv2/highgui.hpp>
-#include "IOWrapper/ImageRW.h"
+#include "ImageRW.h"
 
 namespace dso {
 

@@ -21,7 +21,7 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "util/settings.h"
+#include "settings.h"
 #include <boost/bind.hpp>
 
 namespace dso {

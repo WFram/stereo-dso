@@ -23,8 +23,8 @@
 
 #pragma once
 #include <vector>
-#include "util/MinimalImage.h"
-#include "util/NumType.h"
+#include "MinimalImage.h"
+#include "NumType.h"
 
 namespace dso {
 

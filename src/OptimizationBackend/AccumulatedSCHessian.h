@@ -24,9 +24,9 @@
 #pragma once
 
 #include <math.h>
-#include "OptimizationBackend/MatrixAccumulators.h"
-#include "util/IndexThreadReduce.h"
-#include "util/NumType.h"
+#include "MatrixAccumulators.h"
+#include "IndexThreadReduce.h"
+#include "NumType.h"
 #include "vector"
 
 namespace dso {

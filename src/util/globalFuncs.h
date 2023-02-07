@@ -23,8 +23,9 @@
 
 #pragma once
 #include <cmath>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/opencv.hpp>
+#include <opencv4/opencv2/core.hpp>
+#include <opencv4/opencv2/highgui.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 #include "IOWrapper/ImageDisplay.h"
 #include "fstream"
 #include "util/NumType.h"

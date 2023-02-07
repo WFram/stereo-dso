@@ -38,6 +38,7 @@
 #include "util/IndexThreadReduce.h"
 #include "util/NumType.h"
 
+#include <opencv4/opencv2/opencv.hpp>
 #include <math.h>
 
 namespace dso {

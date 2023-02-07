@@ -21,7 +21,7 @@
  * along with DSO. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv4/opencv2/highgui.hpp>
 #include "IOWrapper/ImageRW.h"
 
 namespace dso {

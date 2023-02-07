@@ -54,9 +54,9 @@
 #include "util/ImageAndExposure.h"
 
 #include <cmath>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/opencv.hpp>
+#include <opencv4/opencv2/highgui.hpp>
+#include <opencv4/opencv2/imgproc/imgproc.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 
 namespace dso {
 int FrameHessian::instanceCounter = 0;

@@ -1,0 +1,8 @@
+<launch>
+
+    <rosparam command="load" file="$(find sdso)/config/common.yaml" />
+    <include file="$(find visual_occupancy_map)/launch/dog.launch" />
+    <node pkg="sdso" type="sdso_ros" name="sdso_ros" output="screen" args="mode=1 preset=0 nogui=1 calib=$(find sdso)/config/camera_zed2_radtan.txt cam0/image_raw:=/zed2/zed_node/left/image_rect_color cam1/image_raw:=/zed2/zed_node/right/image_rect_color" />
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sdso)/rviz/zed2_loc_config.rviz" />
+</launch>

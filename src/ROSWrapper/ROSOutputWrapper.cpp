@@ -148,11 +148,16 @@ void ROSOutputWrapper::publishOutput() {
   sensor_msgs::PointCloud2 dso_local_cloud;
   pclMutex.lock();
 
-  while (localPointsBuf.size() > 1) localPointsBuf.pop_front();
-  dso_local_cloud = localPointsBuf.front();
-  dso_local_cloud.header.stamp = dso_pose->header.stamp;
-  dsoLocalPointCloudPublisher.publish(dso_local_cloud);
-  localPointsBuf.clear();
+  auto publish_point_cloud = [&](std::deque<sensor_msgs::PointCloud2> &points_buf, sensor_msgs::PointCloud2 &msg,
+                                 const ros::Publisher &publisher) {
+    while (points_buf.size() > 1) points_buf.pop_front();
+    msg = points_buf.front();
+    msg.header.stamp = dso_pose->header.stamp;
+    publisher.publish(msg);
+    points_buf.clear();
+  };
+
+  publish_point_cloud(localPointsBuf, dso_local_cloud, dsoLocalPointCloudPublisher);
 
   pclMutex.unlock();
 }
@@ -318,7 +323,7 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
     }
   }
 
-  if (temp_active_local_cloud_world->size() < 1) return;
+  if (temp_active_local_cloud_world->size() < 1 or temp_margin_local_cloud_world->size() < 1) return;
 
   pcl::toPCLPointCloud2(*temp_active_local_cloud_world, *active_local_cloud_world);
   pcl::toPCLPointCloud2(*temp_margin_local_cloud_world, *margin_local_cloud_world);
@@ -346,11 +351,11 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
   ros_ts.fromSec(timestamp);
 
   if (useFiltering) {
-    pcl_conversions::moveFromPCL(*filtered_active_local_cloud_world, msg_local_cloud);
-    *global_cloud += *filtered_active_local_cloud_world;
+    *global_cloud += *filtered_margin_local_cloud_world;
+    pcl_conversions::moveFromPCL(*filtered_margin_local_cloud_world, msg_local_cloud);
   } else {
-    pcl_conversions::moveFromPCL(*active_local_cloud_world, msg_local_cloud);
-    *global_cloud += *active_local_cloud_world;
+    *global_cloud += *margin_local_cloud_world;
+    pcl_conversions::moveFromPCL(*margin_local_cloud_world, msg_local_cloud);
   }
   msg_local_cloud.header.stamp = ros_ts;
   msg_local_cloud.header.frame_id = "zed2_camera_frame";

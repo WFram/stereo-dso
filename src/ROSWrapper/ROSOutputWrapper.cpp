@@ -48,6 +48,9 @@ dso::ROSOutputWrapper::ROSOutputWrapper()
   std::cout << "minNumPointsToSend: " << minNumPointsToSend << std::endl;
   std::cout << "useRANSAC: " << useRANSAC << std::endl;
 
+  ros::param::get("publishMarginCloud", publishMarginCloud);
+  std::cout << "publishMarginCloud: " << publishMarginCloud << std::endl;
+
   ros::param::get("useReferenceCloud", useReferenceCloud);
   std::cout << "useReferenceCloud: " << useReferenceCloud << std::endl;
   ros::param::get("referenceCloudPath", referenceCloudPath);
@@ -254,7 +257,7 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
     std::unique_lock<std::mutex> lk(mutex);
     for (dso::FrameHessian *fh : frames) {
       npointsHessians += fh->pointHessians.size();
-      npointsHessiansMarginalized += fh->pointHessiansMarginalized.size();
+      if (publishMarginCloud) npointsHessiansMarginalized += fh->pointHessiansMarginalized.size();
 
       auto fill_point_cloud = [&](const std::vector<dso::PointHessian *> &points, PointCloudXYZ::Ptr cloud) {
         for (auto &ph : points) {
@@ -317,16 +320,17 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
       };
 
       fill_point_cloud(fh->pointHessians, temp_active_local_cloud_world);
-      fill_point_cloud(fh->pointHessiansMarginalized, temp_margin_local_cloud_world);
+      if (publishMarginCloud) fill_point_cloud(fh->pointHessiansMarginalized, temp_margin_local_cloud_world);
 
       timestamp = fh->shell->timestamp;
     }
   }
 
-  if (temp_active_local_cloud_world->size() < 1 or temp_margin_local_cloud_world->size() < 1) return;
+  if (temp_active_local_cloud_world->size() < 1 or (publishMarginCloud and temp_margin_local_cloud_world->size() < 1))
+    return;
 
   pcl::toPCLPointCloud2(*temp_active_local_cloud_world, *active_local_cloud_world);
-  pcl::toPCLPointCloud2(*temp_margin_local_cloud_world, *margin_local_cloud_world);
+  if (publishMarginCloud) pcl::toPCLPointCloud2(*temp_margin_local_cloud_world, *margin_local_cloud_world);
 
   pcl::PCLPointCloud2::Ptr filtered_active_local_cloud_world(new pcl::PCLPointCloud2);
   pcl::PCLPointCloud2::Ptr filtered_margin_local_cloud_world(new pcl::PCLPointCloud2);
@@ -343,19 +347,20 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
   if (useFiltering) {
     filter_point_cloud(active_local_cloud_world, activeRadiusSearch, activeMinNeighborsInRadius,
                        filtered_active_local_cloud_world);
-    filter_point_cloud(margin_local_cloud_world, marginRadiusSearch, marginMinNeighborsInRadius,
-                       filtered_margin_local_cloud_world);
+    if (publishMarginCloud)
+      filter_point_cloud(margin_local_cloud_world, marginRadiusSearch, marginMinNeighborsInRadius,
+                         filtered_margin_local_cloud_world);
   }
 
   ros::Time ros_ts;
   ros_ts.fromSec(timestamp);
 
   if (useFiltering) {
-    *global_cloud += *filtered_margin_local_cloud_world;
-    pcl_conversions::moveFromPCL(*filtered_margin_local_cloud_world, msg_local_cloud);
+    *global_cloud += *filtered_active_local_cloud_world;
+    pcl_conversions::moveFromPCL(*filtered_active_local_cloud_world, msg_local_cloud);
   } else {
-    *global_cloud += *margin_local_cloud_world;
-    pcl_conversions::moveFromPCL(*margin_local_cloud_world, msg_local_cloud);
+    *global_cloud += *active_local_cloud_world;
+    pcl_conversions::moveFromPCL(*active_local_cloud_world, msg_local_cloud);
   }
   msg_local_cloud.header.stamp = ros_ts;
   msg_local_cloud.header.frame_id = "zed2_camera_frame";

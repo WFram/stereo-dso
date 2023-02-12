@@ -1,3 +1,17 @@
+# TODO: make as maps
+
+# RadiusOutlierRemoval settings
+useFiltering: false
+activeMinNeighborsInRadius: 4 # 8
+activeRadiusSearch: 0.2 # 0.2
+marginMinNeighborsInRadius: 4
+marginRadiusSearch: 0.2
+
+# For localization
+publishMarginCloud: false
+useReferenceCloud: true
+referenceCloudPath: "/home/wfram/.ros/dmvio_global_cloud.pcd"
+
 minNumPointsToSend: 100
 useRANSAC: false
 
@@ -6,12 +20,6 @@ distanceThreshold: 0.1 # 0.01
 probability: 0.99  # NOT IN USE
 maxIterations: 1000  # NOT IN USE
 
-# RadiusOutlierRemoval settings
-useFiltering: true
-activeMinNeighborsInRadius: 4 # 8
-activeRadiusSearch: 0.2 # 0.2
-marginMinNeighborsInRadius: 4
-marginRadiusSearch: 0.2
 # StatisticalOutlierRemoval settings
 meanK: 10
 stddevMulThresh: 0.01
@@ -20,7 +28,3 @@ stddevMulThresh: 0.01
 clusterTolerance: 0.2 # 0.02
 minClusterSize: 35
 maxClusterSize: 5000
-
-# For localization
-useReferenceCloud: false
-referenceCloudPath: "/home/wfram/.ros/dmvio_global_cloud.pcd"

@@ -61,12 +61,14 @@ class ROSOutputWrapper : public dso::IOWrap::Output3DWrapper {
 
   std::function<bool(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)> srv_cbk =
       [this](std_srvs::Empty::Request &req, std_srvs::Empty::Response &res) {
-        PointCloudXYZ::Ptr global_cloud_1(new PointCloudXYZ);
-        pcl::fromPCLPointCloud2(*global_cloud, *global_cloud_1);
-        pcl::io::savePCDFileASCII("stereo_dso_global_cloud.pcd", *global_cloud_1);
+        PointCloudXYZ::Ptr temp_global_cloud(new PointCloudXYZ);
+        pcl::fromPCLPointCloud2(*global_cloud, *temp_global_cloud);
+        pcl::io::savePCDFileASCII("stereo_dso_global_cloud.pcd", *temp_global_cloud);
         ROS_INFO("Global cloud saved");
         return true;
       };
+
+  bool publishMarginCloud;
 
   // ref cloud
   bool useReferenceCloud;

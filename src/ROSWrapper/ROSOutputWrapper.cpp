@@ -251,7 +251,7 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
       npointsHessians += fh->pointHessians.size();
       npointsHessiansMarginalized += fh->pointHessiansMarginalized.size();
 
-      auto fill_point_cloud = [&](const std::vector<dso::PointHessian*> &points, PointCloudXYZ::Ptr cloud) {
+      auto fill_point_cloud = [&](const std::vector<dso::PointHessian *> &points, PointCloudXYZ::Ptr cloud) {
         for (auto &ph : points) {
           Eigen::Vector3d pos_cam, pos_world, pos_metric_cam;
 
@@ -324,31 +324,26 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
   pcl::toPCLPointCloud2(*temp_margin_local_cloud_world, *margin_local_cloud_world);
 
   pcl::PCLPointCloud2::Ptr filtered_active_local_cloud_world(new pcl::PCLPointCloud2);
+  pcl::PCLPointCloud2::Ptr filtered_margin_local_cloud_world(new pcl::PCLPointCloud2);
+
+  auto filter_point_cloud = [&](pcl::PCLPointCloud2::Ptr raw_cloud, const double &radius_search,
+                                const double &min_neighbors_in_radius, pcl::PCLPointCloud2::Ptr filtered_cloud) {
+    outrem.setInputCloud(raw_cloud);
+    outrem.setRadiusSearch(radius_search);
+    outrem.setMinNeighborsInRadius(min_neighbors_in_radius);
+    outrem.setKeepOrganized(true);
+    outrem.filter(*filtered_cloud);
+  };
 
   if (useFiltering) {
-    outrem.setInputCloud(active_local_cloud_world);
-    outrem.setRadiusSearch(activeRadiusSearch);
-    outrem.setMinNeighborsInRadius(activeMinNeighborsInRadius);
-    outrem.setKeepOrganized(true);
-    outrem.filter(*filtered_active_local_cloud_world);
+    filter_point_cloud(active_local_cloud_world, activeRadiusSearch, activeMinNeighborsInRadius,
+                       filtered_active_local_cloud_world);
+    filter_point_cloud(margin_local_cloud_world, marginRadiusSearch, marginMinNeighborsInRadius,
+                       filtered_margin_local_cloud_world);
   }
-
-  /*
-      outrem.setInputCloud(margin_local_cloud_2);
-      outrem.setRadiusSearch(marginRadiusSearch);
-      outrem.setMinNeighborsInRadius(marginMinNeighborsInRadius);
-      outrem.setKeepOrganized(true);
-      outrem.filter(*filtered_margin_local_cloud_2);
-
-      if (filtered_active_local_cloud_world->size() < minNumPointsToSend)
-      {
-          ROS_WARN("Not enough points");
-          return;
-      }*/
 
   ros::Time ros_ts;
   ros_ts.fromSec(timestamp);
-  //    *local_cloud_world_2 = *filtered_active_local_cloud_world + *filtered_margin_local_cloud_2;
 
   if (useFiltering) {
     pcl_conversions::moveFromPCL(*filtered_active_local_cloud_world, msg_local_cloud);

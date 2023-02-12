@@ -9,6 +9,7 @@ marginRadiusSearch: 0.2
 
 # For localization
 publishMarginCloud: false
+accumulateGlobalCloud: false
 useReferenceCloud: true
 referenceCloudPath: "/home/wfram/.ros/dmvio_global_cloud.pcd"
 

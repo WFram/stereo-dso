@@ -50,6 +50,8 @@ dso::ROSOutputWrapper::ROSOutputWrapper()
 
   ros::param::get("publishMarginCloud", publishMarginCloud);
   std::cout << "publishMarginCloud: " << publishMarginCloud << std::endl;
+  ros::param::get("accumulateGlobalCloud", accumulateGlobalCloud);
+  std::cout << "accumulateGlobalCloud: " << accumulateGlobalCloud << std::endl;
 
   ros::param::get("useReferenceCloud", useReferenceCloud);
   std::cout << "useReferenceCloud: " << useReferenceCloud << std::endl;
@@ -356,10 +358,10 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
   ros_ts.fromSec(timestamp);
 
   if (useFiltering) {
-    *global_cloud += *filtered_active_local_cloud_world;
+    if (accumulateGlobalCloud) *global_cloud += *filtered_active_local_cloud_world;
     pcl_conversions::moveFromPCL(*filtered_active_local_cloud_world, msg_local_cloud);
   } else {
-    *global_cloud += *active_local_cloud_world;
+    if (accumulateGlobalCloud) *global_cloud += *active_local_cloud_world;
     pcl_conversions::moveFromPCL(*active_local_cloud_world, msg_local_cloud);
   }
   msg_local_cloud.header.stamp = ros_ts;
@@ -369,4 +371,9 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
     std::unique_lock<std::mutex> mtx(pclMutex);
     localPointsBuf.push_back(msg_local_cloud);
   }
+
+  active_local_cloud_world.reset();
+  margin_local_cloud_world.reset();
+  filtered_active_local_cloud_world.reset();
+  filtered_margin_local_cloud_world.reset();
 }

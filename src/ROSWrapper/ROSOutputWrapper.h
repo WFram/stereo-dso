@@ -69,6 +69,7 @@ class ROSOutputWrapper : public dso::IOWrap::Output3DWrapper {
       };
 
   bool publishMarginCloud;
+  bool accumulateGlobalCloud;
 
   // ref cloud
   bool useReferenceCloud;

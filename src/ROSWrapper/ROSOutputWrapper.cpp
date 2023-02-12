@@ -1,6 +1,6 @@
 #include "ROSOutputWrapper.h"
-#include <HessianBlocks.h>
 #include <FrameShell.h>
+#include <HessianBlocks.h>
 
 using namespace dso;
 
@@ -235,15 +235,10 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
   float cyi = -cy / fy;
 
   sensor_msgs::PointCloud2 msg_local_cloud;
-  //    PointCloudXYZ::Ptr local_cloud_cam(new PointCloudXYZ);
-  //    PointCloudXYZ::Ptr local_cloud_world(new PointCloudXYZ);
-  //    PointCloudXYZ::Ptr active_local_cloud_cam(new PointCloudXYZ);
   PointCloudXYZ::Ptr active_local_cloud_world(new PointCloudXYZ);
-  //    PointCloudXYZ::Ptr margin_local_cloud(new PointCloudXYZ);
+  PointCloudXYZ::Ptr margin_local_cloud_world(new PointCloudXYZ);
 
   pcl::PCLPointCloud2::Ptr active_local_cloud_world_2(new pcl::PCLPointCloud2);
-  //    pcl::PCLPointCloud2::Ptr margin_local_cloud_2(new pcl::PCLPointCloud2);
-  //    pcl::PCLPointCloud2::Ptr local_cloud_world_2(new pcl::PCLPointCloud2);
 
   long int npointsHessians = 0;
   long int npointsHessiansMarginalized = 0;
@@ -255,127 +250,68 @@ void ROSOutputWrapper::publishKeyframes(std::vector<dso::FrameHessian *> &frames
       npointsHessians += fh->pointHessians.size();
       npointsHessiansMarginalized += fh->pointHessiansMarginalized.size();
 
-      for (dso::PointHessian *ph : fh->pointHessians) {
-        Eigen::Vector3d pos_cam, pos_world, pos_metric_cam;
-
-        // [sx, sy, s]
-        float idpeth = ph->idepth_scaled;
-        float idepth_hessian = ph->idepth_hessian;
-        float relObsBaseline = ph->maxRelBaseline;
-
-        if (idpeth < 0) continue;
-
-        float depth = (1.0f / idpeth);
-        float depth4 = depth * depth;
-        depth4 *= depth4;
-        float var = (1.0f / (idepth_hessian + 0.01));
-
-        if (var * depth4 > scaledTH) continue;
-
-        if (var > absTH) continue;
-
-        if (relObsBaseline < minRelBS) continue;
-
-        // TODO: we used fixed scaling here
-        pos_cam[0] = (ph->u * fxi + cxi) * depth;
-        pos_cam[1] = (ph->v * fyi + cyi) * depth;
-        pos_cam[2] = depth * (1 + 2 * fxi * (rand() / (float)RAND_MAX - 0.5f));
-
-        auto &camToWorld = fh->shell->camToWorld;
-        Sophus::SE3d fixedScalePointToWorld(transformPointFixedScale(camToWorld.inverse(), pos_cam));
-
-        Eigen::Matrix<double, 4, 4> e_fixedScalePointToWorld = fixedScalePointToWorld.matrix();
-
-        for (int i = 0; i < 3; i++) pos_world[i] = e_fixedScalePointToWorld(i, 3);
-
-        // TODO: make for cam points
-
-        Sophus::SE3d fixedScalePointToCam(invTransformPointFixedScale(mCamToWorld.inverse(), pos_world));
-
-        // If you don't want to use the optical transform, then remove Toc from here
-        Eigen::Matrix<double, 4, 4> e_fixedScalePointToCam = Tmir.matrix() * Toc.matrix() *
-                                                             fixedScalePointToCam.matrix() * Toc.inverse().matrix() *
-                                                             Tmir.inverse().matrix();
-        //                Eigen::Matrix<double, 4, 4> e_fixedScalePointToCam = Toc.matrix() *
-        //                fixedScalePointToCam.matrix();
-        for (int i = 0; i < 3; i++) {
-          pos_metric_cam[i] = e_fixedScalePointToCam(i, 3);
-        }
-
-        pcl::PointXYZ point_world;
-        point_world.x = pos_world(0);
-        point_world.y = pos_world(1);
-        point_world.z = pos_world(2);
-
-        pcl::PointXYZ point_metric_cam;
-        point_metric_cam.x = pos_metric_cam(0);
-        point_metric_cam.y = pos_metric_cam(1);
-        point_metric_cam.z = pos_metric_cam(2);
-
-        active_local_cloud_world->push_back(point_metric_cam);
-      }
-
-      /*for (dso::PointHessian *phm: fh->pointHessiansMarginalized)
-      {
+      auto fill_point_cloud = [&](const std::vector<dso::PointHessian*> &points, PointCloudXYZ::Ptr cloud) {
+        for (auto &ph : points) {
           Eigen::Vector3d pos_cam, pos_world, pos_metric_cam;
 
           // [sx, sy, s]
-          float idpeth = phm->idepth_scaled;
-          float idepth_hessian = phm->idepth_hessian;
-          float relObsBaseline = phm->maxRelBaseline;
+          float idpeth = ph->idepth_scaled;
+          float idepth_hessian = ph->idepth_hessian;
+          float relObsBaseline = ph->maxRelBaseline;
 
           if (idpeth < 0) continue;
 
           float depth = (1.0f / idpeth);
           float depth4 = depth * depth;
           depth4 *= depth4;
-          float var = (1.0f / (idepth_hessian + 0.01));
+          float var = (1.0f / (idepth_hessian + 0.01f));
 
-          if (var * depth4 > scaledTH)
-              continue;
+          if (var * depth4 > scaledTH) continue;
 
-          if (var > absTH)
-              continue;
+          if (var > absTH) continue;
 
-          if (relObsBaseline < minRelBS)
-              continue;
+          if (relObsBaseline < minRelBS) continue;
 
           // TODO: we used fixed scaling here
-          pos_cam[0] = (phm->u * fxi + cxi) * depth;
-          pos_cam[1] = (phm->v * fyi + cyi) * depth;
-          pos_cam[2] = depth * (1 + 2 * fxi * (rand() / (float) RAND_MAX - 0.5f));
+          pos_cam[0] = (ph->u * fxi + cxi) * depth;
+          pos_cam[1] = (ph->v * fyi + cyi) * depth;
+          pos_cam[2] = depth * (1 + 2 * fxi * (rand() / static_cast<float>(RAND_MAX) - 0.5f));
 
           auto &camToWorld = fh->shell->camToWorld;
-          Sophus::SE3d fixedScalePointToWorld(transformPointFixedScale(camToWorld.inverse(),
-                                                                       pos_cam));
+          Sophus::SE3d fixedScalePointToWorld(transformPointFixedScale(camToWorld.inverse(), pos_cam));
 
           Eigen::Matrix<double, 4, 4> e_fixedScalePointToWorld = fixedScalePointToWorld.matrix();
 
-          for (int i = 0; i < 3; i++)
-              pos_world[i] = e_fixedScalePointToWorld(i, 3);
+          for (int i = 0; i < 3; i++) pos_world[i] = e_fixedScalePointToWorld(i, 3);
 
-          Sophus::SE3d fixedScalePointToCam(invTransformPointFixedScale(mCamToWorld.inverse(),
-                                                                        pos_world));
+          // TODO: make for cam points
+
+          Sophus::SE3d fixedScalePointToCam(invTransformPointFixedScale(mCamToWorld.inverse(), pos_world));
 
           // If you don't want to use the optical transform, then remove Toc from here
           Eigen::Matrix<double, 4, 4> e_fixedScalePointToCam = Tmir.matrix() * Toc.matrix() *
-      fixedScalePointToCam.matrix() * Toc.inverse().matrix() * Tmir.inverse().matrix(); for (int i = 0; i < 3; i++)
-          {
-              pos_metric_cam[i] = e_fixedScalePointToCam(i, 3);
+                                                               fixedScalePointToCam.matrix() * Toc.inverse().matrix() *
+                                                               Tmir.inverse().matrix();
+
+          for (int i = 0; i < 3; i++) {
+            pos_metric_cam[i] = e_fixedScalePointToCam(i, 3);
           }
 
-          pcl::PointXYZ point_world;
+          pcl::PointXYZ point_world, point_metric_cam;
           point_world.x = pos_world(0);
           point_world.y = pos_world(1);
           point_world.z = pos_world(2);
 
-          pcl::PointXYZ point_metric_cam;
           point_metric_cam.x = pos_metric_cam(0);
           point_metric_cam.y = pos_metric_cam(1);
           point_metric_cam.z = pos_metric_cam(2);
 
-          margin_local_cloud->push_back(point_metric_cam);
-      }*/
+          cloud->push_back(point_metric_cam);
+        }
+      };
+
+      fill_point_cloud(fh->pointHessians, active_local_cloud_world);
+      fill_point_cloud(fh->pointHessiansMarginalized, margin_local_cloud_world);
 
       timestamp = fh->shell->timestamp;
     }
